@@ -1,5 +1,45 @@
 # scDGD
-This is the repository for the single-cell transcriptomics application of the Deep Generative Decoder (DGD), developed by the Krogh group.
+
+scDGD is an application of our encoder-less generative model, the Deep Generative Decoder (DGD), to single-cell transcriptomics data. 
+
+It learns low-dimensional representations of full transcriptomics matrices without feature selection. The low-dimensional embeddings are of higher quality than comparable methods such as scVI and the data reconstruction is highly data efficient, outperforming scVI and scVAE, especially on very small data sets.
+
+For more information about the underlying method and our results, check out our [manuscript](https://arxiv.org/abs/2110.06672).
+
+## Installation
+
+You can install the package via
+```
+pip install git+https://github.com/Center-for-Health-Data-Science/scDGD
+```
+
+## How to use it
+
+From our experience, scDGD can be applied to data sets with as few as 500 cells and as many as one million.
 
 Check out the notebook showing an example of how to use scDGD:
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Center-for-Health-Data-Science/scDGD/blob/HEAD/examples/scDGD_training_mousebrain5k.ipynb)
+
+## Reference
+
+If you use scDGD in your research, please consider citing
+
+```
+@misc{https://doi.org/10.48550/arxiv.2110.06672,
+  doi = {10.48550/ARXIV.2110.06672},
+  
+  url = {https://arxiv.org/abs/2110.06672},
+  
+  author = {Schuster, Viktoria and Krogh, Anders},
+  
+  keywords = {Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {The deep generative decoder: Using MAP estimates of representations},
+  
+  publisher = {arXiv},
+  
+  year = {2021},
+  
+  copyright = {Creative Commons Attribution 4.0 International}
+}
+```
