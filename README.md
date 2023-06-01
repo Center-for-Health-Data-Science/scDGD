@@ -25,21 +25,12 @@ Check out the notebook showing an example of how to use scDGD:
 If you use scDGD in your research, please consider citing
 
 ```
-@misc{https://doi.org/10.48550/arxiv.2110.06672,
-  doi = {10.48550/ARXIV.2110.06672},
-  
-  url = {https://arxiv.org/abs/2110.06672},
-  
-  author = {Schuster, Viktoria and Krogh, Anders},
-  
-  keywords = {Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
-  
-  title = {The deep generative decoder: Using MAP estimates of representations},
-  
-  publisher = {arXiv},
-  
-  year = {2021},
-  
-  copyright = {Creative Commons Attribution 4.0 International}
+@misc{schusterkrogh2022,
+      title={The Deep Generative Decoder: MAP estimation of representations improves modeling of single-cell RNA data}, 
+      author={Viktoria Schuster and Anders Krogh},
+      year={2022},
+      eprint={2110.06672},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
 }
 ```
