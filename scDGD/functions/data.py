@@ -1,5 +1,5 @@
 import torch
-import numpoy as np
+import numpy as np
 from sklearn.model_selection import train_test_split
 from scDGD.classes import scDataset
 
