@@ -35,11 +35,11 @@ def prepate_data(adata, label_column, train_fraction=0.8, include_test=True, sca
         else:
             train_mode = False
             train_val_test = 'test'
+        adata.obs['label'] = labels
+        adata.obs['train_val_test'] = train_val_test
     else:
         if len(set(adata.obs['train_val_test'])) == 1:
             train_mode = False
-    adata.obs['label'] = labels
-    adata.obs['train_val_test'] = train_val_test
     # make sure to afterwards also return the adata object so that the data split can be re-used
 
     ###

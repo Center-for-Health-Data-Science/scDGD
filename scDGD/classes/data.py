@@ -80,18 +80,14 @@ class scDataset(Dataset):
             idx = idx.tolist()
         if idx is None:
             idx = np.arange(self.__len__())
-        if self.label_type == 'stop':
-            label_ids = np.argmax(np.expand_dims(np.asarray(self.meta['stop']),0)>=np.expand_dims(idx,1),axis=1)
-            return np.asarray(np.array(self.meta['label'])[label_ids])
-        elif self.label_type == 'cell_type':
-            return np.asarray(np.array(self.meta['cell_type'])[idx])
+        return np.asarray(np.array(self.meta[self.label_type])[idx])
     
     def get_labels_numerical(self, idx=None):
         if torch.is_tensor(idx):
             idx = idx.tolist()
         if idx is None:
             idx = np.arange(self.__len__())
-        label_ids = np.argmax(np.expand_dims(np.asarray(self.meta['stop']),0)>=np.expand_dims(idx,1),axis=1)
+        label_ids = np.argmax(np.expand_dims(np.asarray(self.meta[self.label_type]),0)>=np.expand_dims(idx,1),axis=1)
         return label_ids
     
 

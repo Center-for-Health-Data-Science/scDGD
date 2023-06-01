@@ -143,9 +143,7 @@ def dgd_train(model, gmm, train_loader, validation_loader, n_epochs=500,
                 sup_i = supervision_labels[i]
                 gmm_error = -gmm(z,sup_i).sum()
             else:
-                gmm_a, gmm_weights, gmm_prior = gmm.forward_split(z)
-                gmm_likelihood = torch.logsumexp(gmm_a.clone()+gmm_weights.clone(), dim=-1)
-                gmm_error = - (gmm_likelihood.clone() + gmm_prior.clone()).sum()
+                gmm_error = -gmm(z).sum()
             loss = recon_loss_x.clone() + gmm_error.clone()
             
             # backpropagate and update
@@ -171,12 +169,7 @@ def dgd_train(model, gmm, train_loader, validation_loader, n_epochs=500,
             z = test_rep(i)
             y = model(z)
             recon_loss_x = model.nb.loss(x, lib, y).sum()
-            if supervision_labels is not None:
-                gmm_error = -gmm(z).sum()
-            else:
-                gmm_a, gmm_weights, gmm_prior = gmm.forward_split(z)
-                gmm_likelihood = torch.logsumexp(gmm_a.clone()+gmm_weights.clone(), dim=-1)
-                gmm_error = - (gmm_likelihood.clone() + gmm_prior.clone()).sum()
+            gmm_error = -gmm(z).sum()
             loss = recon_loss_x.clone() + gmm_error.clone()
             loss.backward()
 
@@ -193,6 +186,8 @@ def dgd_train(model, gmm, train_loader, validation_loader, n_epochs=500,
             best_gmm_epoch = epoch
             if best_gmm_cluster >= acc_save_threshold:
                 save_here = True
+        elif epoch == n_epochs-1:
+            save_here = True
         
         if wandb_logging:
             wandb.log({"loss_train": train_avg[-1],
@@ -203,10 +198,17 @@ def dgd_train(model, gmm, train_loader, validation_loader, n_epochs=500,
                     "loss_gmm_test": dist_test_avg[-1],
                     "cluster_accuracy": cluster_accuracies[-1],
                     "epoch": epoch})
+        else:
+            # print progress every 10 epochs
+            if epoch % 10 == 0:
+                print("epoch "+str(epoch)+": train loss "+str(train_avg[-1])+", validation loss "+str(test_avg[-1])+", cluster accuracy "+str(cluster_accuracies[-1]))
         
         if export_name is not None:
             if save_here:
-                print("model saved at epoch "+str(epoch)+" for having so far highest accuracy of "+str(cluster_accuracies[-1]))
+                if epoch == n_epochs-1:
+                    print("model saved at epoch "+str(epoch)+" for having reached the end of training")
+                else:
+                    print("model saved at epoch "+str(epoch)+" for having so far highest accuracy of "+str(cluster_accuracies[-1]))
                 torch.save(model.state_dict(), export_dir+export_name+'/'+export_name+'_decoder.pt')
                 torch.save(rep.state_dict(), export_dir+export_name+'/'+export_name+'_representation.pt')
                 torch.save(test_rep.state_dict(), export_dir+export_name+'/'+export_name+'_valRepresentation.pt')

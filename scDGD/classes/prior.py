@@ -51,7 +51,7 @@ class softball():
 
 class GaussianMixture(nn.Module):
     def __init__(self, Nmix, dim, type="diagonal",
-               alpha=1, mean_init=(1.,1.), sd_init=(1.0,1.0)
+               alpha=1, mean_init=(1.,1.), sd_init=[1.0,1.0]
                ):
         '''
         A mixture of multi-variate Gaussians
