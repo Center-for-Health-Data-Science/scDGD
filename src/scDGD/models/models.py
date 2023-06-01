@@ -3,7 +3,7 @@ import torch.nn as nn
 from scDGD.classes.output_distributions import NBLayer
 
 class DGD(nn.Module):
-    def __init__(self, latent, hidden, out, r_init=2, scaling_type='max'):
+    def __init__(self, out, latent=20, hidden=[100,100,100], r_init=2, scaling_type='max'):
         super(DGD, self).__init__()
 
         self.main = nn.ModuleList()

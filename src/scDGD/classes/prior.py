@@ -51,7 +51,7 @@ class softball():
 
 class GaussianMixture(nn.Module):
     def __init__(self, Nmix, dim, type="diagonal",
-               alpha=1, mean_prior=None, logbeta_prior=None, mean_init=(0.,1.), sd_init=(0.5,0.5), weight_prior=None
+               alpha=1, mean_init=(1.,1.), sd_init=(1.0,1.0)
                ):
         '''
         A mixture of multi-variate Gaussians
@@ -80,10 +80,7 @@ class GaussianMixture(nn.Module):
 
         # Means with shape: Nmix,dim
         self.mean = nn.Parameter(torch.empty(Nmix,dim),requires_grad=True)
-        if mean_prior is None:
-            self.mean_prior = gaussian(self.dim,mean_init[0],mean_init[1])
-        else:
-            self.mean_prior = mean_prior
+        self.mean_prior = softball(self.dim,mean_init[0],mean_init[1])
         
         # Dirichlet prior on mixture
         self.alpha = alpha
@@ -91,6 +88,7 @@ class GaussianMixture(nn.Module):
 
         # Log inverse variance with shape (Nmix,dim) or (Nmix,1)
         self.sd_init = sd_init
+        self.sd_init[0] = 0.2*(mean_init[0]/self.Nmix)
         self.betafactor = dim*0.5 # rename this!
         self.bdim=1 # If 'diagonal' the dimension of lobbeta is = dim
         if type == 'fixed':
@@ -106,7 +104,6 @@ class GaussianMixture(nn.Module):
                 raise ValueError("type must be 'isotropic' (default), 'diagonal', or 'fixed'")
             
             self.logbeta = nn.Parameter(torch.empty(Nmix,self.bdim),requires_grad=True)
-            self.logbeta_prior = logbeta_prior
   
         # Mixture coefficients. These are weights for softmax
         self.weight = nn.Parameter(torch.empty(Nmix),requires_grad=True)
@@ -119,12 +116,8 @@ class GaussianMixture(nn.Module):
         with torch.no_grad():
             # Means are sampled from the prior
             self.mean.copy_(self.mean_prior.sample(self.Nmix))
-            if self.logbeta_prior is None:
-                self.logbeta.fill_(-2*math.log(self.sd_init[0]))
-                self.logbeta_prior = gaussian(self.bdim,-2*math.log(self.sd_init[0]),self.sd_init[1])
-            else:
-                # Betas are sampled from prior
-                self.logbeta.copy_(-torch.log(self.logbeta_prior.sample(self.Nmix)))
+            self.logbeta.fill_(-2*math.log(self.sd_init[0]))
+            self.logbeta_prior = gaussian(self.bdim,-2*math.log(self.sd_init[0]),self.sd_init[1])
 
             # Weights are initialized to 1, corresponding to uniform mixture coeffs
             self.weight.fill_(1)
@@ -284,11 +277,11 @@ class GaussianMixture(nn.Module):
 
 
 class GaussianMixtureSupervised(GaussianMixture):
-    def __init__(self, Nclass, dim, Ncpc=1, type="isotropic",
-               alpha=1, mean_prior=None, logbeta_prior=None, mean_init=(0.,1.), sd_init=(0.5,0.5), weight_prior=None
+    def __init__(self, Nclass, dim, Ncpc=1, type="diagonal",
+               alpha=1, mean_init=(1.,1.), sd_init=(1.0,1.0)
                ):
-        super(GaussianMixtureSupervised, self).__init__(Ncpc*Nclass, dim, type=type, alpha=alpha, mean_prior=mean_prior, logbeta_prior=logbeta_prior,
-                                                        mean_init=mean_init, sd_init=sd_init, weight_prior=weight_prior)
+        super(GaussianMixtureSupervised, self).__init__(Ncpc*Nclass, dim, type=type, alpha=alpha,
+                                                        mean_init=mean_init, sd_init=sd_init)
         self.dim = dim
         
         self.Nclass=Nclass

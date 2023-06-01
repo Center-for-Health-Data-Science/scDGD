@@ -45,7 +45,7 @@ def gmm_cluster_acc(r, gmm, labels):
     return acc2
 
 def dgd_train(model, gmm, train_loader, validation_loader, n_epochs=500,
-            latent=20, export_dir='./', export_name='scDGD',
+            export_dir='./', export_name='scDGD',
             lr_schedule_epochs=[0,300],lr_schedule=[[1e-3,1e-2,1e-2],[1e-4,1e-2,1e-2]], optim_betas=[0.5,0.7], wd=1e-4,
             acc_save_threshold=0.5,supervision_labels=None, wandb_logging=False):
     
@@ -61,6 +61,7 @@ def dgd_train(model, gmm, train_loader, validation_loader, n_epochs=500,
     nsample = len(train_loader.dataset)
     nsample_test = len(validation_loader.dataset)
     out_dim = train_loader.dataset.n_genes
+    latent = gmm.dim
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     model=model.to(device)
@@ -214,16 +215,15 @@ def dgd_train(model, gmm, train_loader, validation_loader, n_epochs=500,
     if wandb_logging:
         wandb.run.summary["best_gmm_cluster"] = best_gmm_cluster
         wandb.run.summary["best_gmm_epoch"] = best_gmm_epoch
-    else:
-        # create a history that is returned after training
-        history = pd.DataFrame(
-            {'train_loss': train_avg,
-            'test_loss': test_avg,
-            'train_recon_loss': recon_avg,
-            'test_recon_loss': recon_test_avg,
-            'train_gmm_loss': dist_avg,
-            'test_gmm_loss': dist_test_avg,
-            'cluster_accuracy': cluster_accuracies,
-            'epoch': np.arange(1,n_epochs+1)
-            })
+    # create a history that is returned after training
+    history = pd.DataFrame(
+        {'train_loss': train_avg,
+        'test_loss': test_avg,
+        'train_recon_loss': recon_avg,
+        'test_recon_loss': recon_test_avg,
+        'train_gmm_loss': dist_avg,
+        'test_gmm_loss': dist_test_avg,
+        'cluster_accuracy': cluster_accuracies,
+        'epoch': np.arange(1,n_epochs+1)
+        })
     return model, rep, test_rep, gmm, history
