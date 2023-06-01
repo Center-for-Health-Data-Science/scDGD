@@ -6,7 +6,7 @@ import scipy.sparse
 class scDataset(Dataset):
     """
     """
-    def __init__(self, sparse_mtrx, meta_data, scaling_type='mean', gene_selection=None, subset=None, label_type='stop', sparse=False):
+    def __init__(self, sparse_mtrx, meta_data, label_type, scaling_type='mean', gene_selection=None, subset=None, sparse=False):
         """
         Args:
         This is a custom data set for single cell transcriptomics data.
