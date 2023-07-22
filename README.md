@@ -6,6 +6,8 @@ It learns low-dimensional representations of full transcriptomics matrices witho
 
 For more information about the underlying method and our results, check out our [manuscript](https://arxiv.org/abs/2110.06672).
 
+<img src="https://github.com/Center-for-Health-Data-Science/scDGD/DGD_schematic.png" width="500">
+
 ## Installation
 
 You can install the package via
@@ -19,6 +21,8 @@ From our experience, scDGD can be applied to data sets with as few as 500 cells 
 
 Check out the notebook showing an example of how to use scDGD:
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Center-for-Health-Data-Science/scDGD/blob/HEAD/examples/scDGD_training_mousebrain5k.ipynb)
+
+We have also uploaded pre-trained models for the PBMC (Zheng et al. 2017) and the 10X 1 million mouse brain data sets, along with notebooks showing how to load them [in pretrained_models](https://github/Center-for-Health-Data-Science/scDGD/pretrained_models/).
 
 ## Reference
 
