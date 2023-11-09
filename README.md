@@ -29,12 +29,17 @@ We have also uploaded pre-trained models for the PBMC (Zheng et al. 2017) and th
 If you use scDGD in your research, please consider citing
 
 ```
-@misc{schusterkrogh2022,
-      title={The Deep Generative Decoder: MAP estimation of representations improves modeling of single-cell RNA data}, 
-      author={Viktoria Schuster and Anders Krogh},
-      year={2022},
-      eprint={2110.06672},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+@article{schuster_deep_2023,
+	title = {The Deep Generative Decoder: MAP estimation of representations improves modelling of single-cell RNA data},
+	volume = {39},
+	issn = {1367-4811},
+	shorttitle = {The Deep Generative Decoder},
+	url = {https://doi.org/10.1093/bioinformatics/btad497},
+	doi = {10.1093/bioinformatics/btad497},
+	number = {9},
+	journal = {Bioinformatics},
+	author = {Schuster, Viktoria and Krogh, Anders},
+	month = sep,
+	year = {2023}
 }
 ```
