@@ -6,7 +6,7 @@ import scipy.sparse
 class scDataset(Dataset):
     """
     """
-    def __init__(self, sparse_mtrx, meta_data, label_type, scaling_type='mean', gene_selection=None, subset=None, sparse=False):
+    def __init__(self, sparse_mtrx, meta_data, label_type, scaling_type='max', gene_selection=None, subset=None, sparse=False):
         """
         Args:
         This is a custom data set for single cell transcriptomics data.
@@ -47,6 +47,8 @@ class scDataset(Dataset):
                 self.library = torch.tensor(sparse_mtrx.mean(axis=-1).toarray())
             elif self.scaling_type == 'max':
                 self.library = torch.tensor(sparse_mtrx.max(axis=-1).toarray())
+            elif self.scaling_type == 'sum':
+                self.library = torch.tensor(sparse_mtrx.sum(axis=-1).toarray())
 
         else:
             self.sparse = False
@@ -55,6 +57,8 @@ class scDataset(Dataset):
                 self.library = torch.mean(self.data, dim=-1).unsqueeze(1)
             elif self.scaling_type == 'max':
                 self.library = torch.max(self.data, dim=-1).values.unsqueeze(1)
+            elif self.scaling_type == 'sum':
+                self.library = torch.sum(self.data, dim=-1).unsqueeze(1)
         
         self.n_genes = self.data.shape[1]
         

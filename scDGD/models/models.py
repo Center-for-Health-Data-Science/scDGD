@@ -4,6 +4,7 @@ from scDGD.classes.output_distributions import NBLayer
 import json
 
 
+
 class DGD(nn.Module):
     def __init__(
         self,
@@ -11,9 +12,8 @@ class DGD(nn.Module):
         latent=20,
         hidden=[100, 100, 100],
         r_init=2,
-        scaling_type="max",
-        output="mean",
-        activation="softplus",
+        output_prediction_type="mean",
+        output_activation="sigmoid"
     ):
         super(DGD, self).__init__()
 
@@ -35,9 +35,8 @@ class DGD(nn.Module):
         self.nb = NBLayer(
             out,
             r_init=r_init,
-            scaling_type=scaling_type,
-            output=output,
-            activation=activation,
+            output=output_prediction_type,
+            activation=output_activation
         )
 
     def forward(self, z):
