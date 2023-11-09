@@ -4,7 +4,7 @@ scDGD is an application of our encoder-less generative model, the Deep Generativ
 
 It learns low-dimensional representations of full transcriptomics matrices without feature selection. The low-dimensional embeddings are of higher quality than comparable methods such as scVI and the data reconstruction is highly data efficient, outperforming scVI and scVAE, especially on very small data sets.
 
-For more information about the underlying method and our results, check out our [manuscript](https://arxiv.org/abs/2110.06672).
+For more information about the underlying method and our results, check out the [paper](https://academic.oup.com/bioinformatics/article/39/9/btad497/7241685).
 
 <img src="https://github.com/Center-for-Health-Data-Science/scDGD/blob/main/DGD_schematic.png" width="500">
 
