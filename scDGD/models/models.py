@@ -13,7 +13,7 @@ class DGD(nn.Module):
         hidden=[100, 100, 100],
         r_init=2,
         output_prediction_type="mean",
-        output_activation="sigmoid"
+        output_activation="softplus"
     ):
         super(DGD, self).__init__()
 
