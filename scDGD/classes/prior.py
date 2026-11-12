@@ -35,10 +35,10 @@ class softball:
     samples uniform from the m-ball). NOTE: APPROXIMATE SAMPLING.
     """
 
-    def __init__(self, dim, radius, a=1):
+    def __init__(self, dim, radius, sharpness=1):
         self.dim = dim
         self.radius = radius
-        self.a = a
+        self.s = sharpness
         self.norm = math.lgamma(1 + dim * 0.5) - dim * (
             math.log(radius) + 0.5 * math.log(math.pi)
         )
@@ -59,7 +59,7 @@ class softball:
     def log_prob(self, z):
         # Return log probabilities of elements of tensor (last dim assumed to be z vectors)
         return self.norm - torch.log(
-            1 + torch.exp(self.a * (z.norm(dim=-1) / self.radius - 1))
+            1 + torch.exp(self.s * (z.norm(dim=-1) / self.radius - 1))
         )
 
 
